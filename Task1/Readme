@@ -1,0 +1,131 @@
+# Hosting a Static Website using Nginx, EC2 (t2.micro), and Route 53
+
+This guide will walk you through the steps to host a static website using Nginx on an EC2 instance (t2.micro) and configure DNS using Route 53.
+
+## Prerequisites
+
+- An AWS account
+- A registered domain name
+- Basic knowledge of AWS services
+
+## Steps
+
+### 1. Launch an EC2 Instance
+
+1. Log in to the AWS Management Console.
+2. Navigate to the EC2 Dashboard.
+3. Click on "Launch Instance".
+4. Choose the Amazon Machine Image (AMI) - select an Ubuntu Server.
+5. Choose the instance type - select `t2.micro` (Free tier eligible).
+6. Configure instance details and add storage as needed.
+7. Add tags (optional).
+8. Configure the security group to allow HTTP (port 80) and SSH (port 22) traffic.
+9. Review and launch the instance.
+10. Download the key pair and save it securely.
+
+### 2. Connect to the EC2 Instance
+
+1. Open a terminal (or use PuTTY on Windows).
+2. Connect to the instance using SSH:
+    ```
+    ssh -i /path/to/your-key-pair.pem ubuntu@your-ec2-public-dns
+    ```
+
+### 3. Install Nginx
+
+1. Update the package index:
+    ```
+    sudo apt update
+    ```
+2. Install Nginx:
+    ```
+    sudo apt install nginx -y
+    ```
+3. Start Nginx:
+    ```
+    sudo systemctl start nginx
+    ```
+4. Enable Nginx to start on boot:
+    ```
+    sudo systemctl enable nginx
+    ```
+
+### 4. Deploy Your Static Website
+
+1. Upload your static website files to the `/var/www/html` directory:
+    ```
+    sudo cp -r /path/to/your/website/* /var/www/html/
+    ```
+2. Adjust the ownership and permissions:
+    ```
+    sudo chown -R www-data:www-data /var/www/html
+    sudo chmod -R 755 /var/www/html
+    ```
+
+    ### 4.5. Configure Nginx for Your Website
+
+    1. Create a new Nginx server block configuration file:
+        ``` 
+        sudo nano /etc/nginx/sites-available/yourwebsite
+        ```
+    2. Add the following configuration to the file:
+        ```
+        server {
+            listen 80;
+            server_name yourdomain.com www.yourdomain.com;
+
+            root /var/www/html;
+            index index.html;
+
+            location / {
+                try_files $uri $uri/ =404;
+            }
+        }
+        ```
+    3. Enable the configuration by creating a symbolic link:
+        ```
+        sudo ln -s /etc/nginx/sites-available/yourwebsite /etc/nginx/sites-enabled/
+        ```
+    4. Test the Nginx configuration:
+        ```
+        sudo nginx -t
+        ```
+    5. Restart Nginx to apply the changes:
+        ```
+        sudo systemctl restart nginx
+        ```
+
+  
+### 4.6. Obtain an SSL Certificate
+
+1. Install Certbot:
+    ``` 
+    sudo apt install certbot python3-certbot-nginx -y
+    ```
+2. Obtain the SSL certificate:
+ ```
+    cretbot --nginx
+
+4. Restart Nginx to apply the changes:
+    ``` 
+    sudo systemctl restart nginx
+    ```
+### 5. Configure Route 53
+
+1. Navigate to the Route 53 Dashboard in the AWS Management Console.
+2. Click on "Hosted zones" and select your domain.
+3. Create a new record set:
+    - Name: Leave it blank to use the root domain or specify a subdomain.
+    - Type: A - IPv4 address
+    - Value: Enter the public IP address of your EC2 instance.
+4. Save the record set.
+
+### 6. Access Your Website
+
+1. Open a web browser.
+2. Enter your domain name in the address bar.
+3. Your static website should be displayed.
+
+## Conclusion
+
+You have successfully hosted a static website using Nginx on an EC2 instance and configured DNS using Route 53. For further customization and security, consider setting up SSL/TLS certificates and configuring Nginx accordingly.

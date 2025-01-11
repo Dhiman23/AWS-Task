@@ -1,0 +1,40 @@
+## Interview Explanation
+
+### Hosting a Static Website using Nginx, EC2, and Route 53
+
+**Scenario:** Imagine you need to host a static website for a small project. You decide to use AWS services for scalability and reliability.
+
+1. **Launch an EC2 Instance:** 
+    - You start by launching an EC2 instance using the AWS Management Console. 
+    - Choose an Ubuntu Server AMI and a `t2.micro` instance type, which is free tier eligible.
+    - Configure the security group to allow HTTP and SSH traffic.
+
+2. **Connect to the EC2 Instance:**
+    - Use SSH to connect to your instance from your terminal.
+    - This step ensures you have remote access to manage your server.
+
+3. **Install Nginx:**
+    - Update the package index and install Nginx on your EC2 instance.
+    - Start and enable Nginx to ensure it runs on boot.
+
+4. **Deploy Your Static Website:**
+    - Upload your static website files to the Nginx root directory.
+    - Adjust file permissions to ensure Nginx can serve your files.
+
+5. **Configure Nginx:**
+    - Create a new server block configuration for your website.
+    - Set up the server to listen on port 80 and serve your domain.
+
+6. **Obtain an SSL Certificate:**
+    - Use Certbot to obtain and configure an SSL certificate for HTTPS.
+    - Restart Nginx to apply the changes.
+
+7. **Configure Route 53:**
+    - Set up a hosted zone in Route 53 and create a record set pointing to your EC2 instance's public IP.
+    - This step maps your domain name to your server.
+
+8. **Access Your Website:**
+    - Open a web browser and enter your domain name.
+    - Your static website should be live and accessible.
+
+**Conclusion:** This process demonstrates how to host a static website using AWS services, providing a scalable and reliable solution. You can further enhance security by configuring SSL/TLS certificates.
