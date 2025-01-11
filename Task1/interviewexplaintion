@@ -38,3 +38,5 @@
     - Your static website should be live and accessible.
 
 **Conclusion:** This process demonstrates how to host a static website using AWS services, providing a scalable and reliable solution. You can further enhance security by configuring SSL/TLS certificates.
+
+Medium article link :- https://medium.com/@sajaldhiman16/hosting-a-static-website-using-nginx-ec2-t2-micro-and-route-53-10bb029414ab

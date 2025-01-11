@@ -129,3 +129,4 @@ This guide will walk you through the steps to host a static website using Nginx 
 ## Conclusion
 
 You have successfully hosted a static website using Nginx on an EC2 instance and configured DNS using Route 53. For further customization and security, consider setting up SSL/TLS certificates and configuring Nginx accordingly.
+
